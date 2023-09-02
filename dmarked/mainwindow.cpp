@@ -32,6 +32,9 @@
 #include <DSettingsDialog>
 #include <DSettingsOption>
 #include <DWidgetUtil>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonDocument>
 
 DCORE_USE_NAMESPACE
 DWIDGET_USE_NAMESPACE
@@ -46,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 
     resize(1200, 740);
-    setWindowIcon(QIcon(":/images/dmarked.svg"));
+    setWindowIcon(QIcon(":/images/dmarked.jpeg"));
 
     titlebar()->setCustomWidget(m_searchEdit);
     m_searchEdit->setFixedWidth(400);

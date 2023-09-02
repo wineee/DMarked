@@ -1,35 +1,50 @@
 { stdenv
 , lib
 , fetchFromGitHub
-, dde-pkgs
-, libsForQt5
 , cmake
+, qttools
 , pkg-config
+, wrapQtAppsHook
+, qtbase
+, dtkwidget
+, qt5integration
+, qt5platform-plugins
+, qtwebengine
+, qmarkdowntextedit
+, fakevim
 }:
+
 stdenv.mkDerivation rec {
   pname = "dmarked";
   version = "0.3.0";
 
   src = ./..;
 
-  nativeBuildInputs = with libsForQt5; [
+  nativeBuildInputs = [
     cmake
     qttools
     pkg-config
     wrapQtAppsHook
   ];
 
-  buildInputs = with dde-pkgs; [
-    dtkcore
-    dtkgui
+  buildInputs = [
+    qtbase
     dtkwidget
     qt5platform-plugins
-    libsForQt5.qtwebengine
+    qtwebengine
+    qmarkdowntextedit
+    fakevim
   ];
 
+  cmakeFlags = [                                                                                                                                                            
+    "-DUES_VENDORED_QMARKDOWNTEXTEDIT=OFF"
+    "-DUES_VENDORED_FAKEVIM=OFF"
+  ];
+
+  strictDeps = true;
+
   qtWrapperArgs = [
-    "--prefix QT_QPA_PLATFORM_PLUGIN_PATH : ${dde-pkgs.qt5platform-plugins}/${libsForQt5.qtbase.qtPluginPrefix}"
-    "--prefix QT_PLUGIN_PATH : ${dde-pkgs.qt5integration}/${libsForQt5.qtbase.qtPluginPrefix}"
+    "--prefix QT_PLUGIN_PATH : ${qt5integration}/${qtbase.qtPluginPrefix}"
   ];
 
   meta = with lib; {
